@@ -1,0 +1,23 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "ezledview": {
+      "databases": {
+        "led_db_final_v4_0": {
+          ".read": "auth != null",
+          ".write": "auth != null",
+          ".validate": "newData.hasChildren(['schema', 'version', 'itemCount', 'updatedAt', 'updatedAtClient', 'updatedBy', 'db'])"
+        }
+      },
+      "audit": {
+        "$logId": {
+          ".read": "auth != null",
+          ".write": "auth != null",
+          ".validate": "newData.hasChildren(['type', 'dbPath', 'itemCount', 'reason', 'clientId', 'createdAtClient'])"
+        }
+      }
+    }
+  }
+}

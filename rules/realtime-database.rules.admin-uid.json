@@ -1,0 +1,29 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "ezledview": {
+      "admins": {
+        "$uid": {
+          ".read": "auth != null && auth.uid === $uid",
+          ".write": false
+        }
+      },
+      "databases": {
+        "led_db_final_v4_0": {
+          ".read": "auth != null",
+          ".write": "auth != null && root.child('ezledview/admins').child(auth.uid).val() === true",
+          ".validate": "newData.hasChildren(['schema', 'version', 'itemCount', 'updatedAt', 'updatedAtClient', 'updatedBy', 'db'])"
+        }
+      },
+      "audit": {
+        "$logId": {
+          ".read": "auth != null && root.child('ezledview/admins').child(auth.uid).val() === true",
+          ".write": "auth != null",
+          ".validate": "newData.hasChildren(['type', 'dbPath', 'itemCount', 'reason', 'clientId', 'createdAtClient'])"
+        }
+      }
+    }
+  }
+}

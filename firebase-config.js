@@ -1,11 +1,15 @@
-// ezledview Firebase 동기화 설정 파일
-// 1) Firebase 콘솔에서 Web App을 만든 뒤 firebaseConfig 값을 아래에 붙여 넣으세요.
-// 2) Firestore Database를 생성하고, Authentication > Sign-in method에서 Anonymous 또는 Email 로그인을 활성화하세요.
-// 3) 테스트 중에는 rules/firestore.rules.dev, 운영 시에는 rules/firestore.rules.prod를 참고하세요.
+// ezledview Firebase Realtime Database 동기화 설정 파일 v1.2
+// 사용법:
+// 1) Firebase Console > Project Settings > Web App에서 firebaseConfig 값을 복사합니다.
+// 2) 아래 YOUR_* 값을 실제 값으로 바꿉니다.
+// 3) Realtime Database를 만들고 rules/realtime-database.rules.test.json 규칙을 붙여넣습니다.
+// 4) Authentication > Sign-in method > Anonymous를 사용 설정합니다.
+// 5) GitHub Pages에 업로드 후 index.html 또는 ezledview_PRO_v42_G2B_REALTIME_DB_SYNC_v1_2.html로 접속합니다.
 
 window.EZLED_FIREBASE_CONFIG = {
   apiKey: "YOUR_API_KEY",
   authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
   projectId: "YOUR_PROJECT_ID",
   storageBucket: "YOUR_PROJECT_ID.appspot.com",
   messagingSenderId: "YOUR_SENDER_ID",
@@ -13,14 +17,17 @@ window.EZLED_FIREBASE_CONFIG = {
 };
 
 window.EZLED_DB_SYNC_OPTIONS = {
-  enabled: false,              // Firebase 설정을 넣은 뒤 true로 변경
-  autoConnect: true,           // 화면 로딩 시 서버 DB 자동 연결
-  useAnonymousAuth: true,      // 테스트/사내 운영용. 운영 보안은 Email Auth 권장
-  docPath: "ezledview/databases/led_db_final_v4_0",
-  auditCollection: "ezledview_db_audit",
-  localKey: "ezled_db_final_v4_0_g2b_synced",
-  publishOnAdminSave: true,    // DB관리에서 저장/삭제/엑셀업로드 후 서버 자동반영
-  serverWinsOnConnect: true,   // 접속 시 서버 DB가 있으면 서버 DB 우선
-  seedIfServerEmpty: true,     // 서버 문서가 없으면 data/led_db_seed_v4_0.js의 최종 DB를 서버에 초기 등록
-  requireConfirmText: "SYNC-DB" // 서버 반영 버튼 누를 때 확인 문구
+  enabled: true,               // 실제 config 값이 들어가면 자동 연결됩니다. placeholder이면 LOCAL 모드 유지
+  autoConnect: true,
+  useAnonymousAuth: true,
+
+  mode: "realtime-database",
+  dbPath: "ezledview/databases/led_db_final_v4_0",
+  auditPath: "ezledview/audit",
+
+  localKey: "ezled_db_final_v4_0_g2b_rtdb_synced",
+  publishOnAdminSave: true,    // DB관리 저장/삭제/엑셀업로드 후 자동 서버 반영
+  serverWinsOnConnect: true,   // 서버 DB가 있으면 접속 시 서버값 우선
+  seedIfServerEmpty: true,     // 서버가 비어 있으면 최종 조달 Seed 54개 자동 업로드
+  requireConfirmText: "SYNC-DB"
 };
