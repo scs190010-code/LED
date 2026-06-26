@@ -1,0 +1,15 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 개발/테스트용: 로그인만 되어 있으면 읽기/쓰기 허용
+    // Firebase Authentication에서 Anonymous 로그인을 켠 뒤 사용하세요.
+    match /ezledview/databases/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    match /ezledview_db_audit/{auditId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+    }
+  }
+}
